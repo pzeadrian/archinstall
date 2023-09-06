@@ -246,11 +246,7 @@ pacman -S networkmanager
 systemctl enable NetworkManager
 ```
 
-Now you can install a bootloader and test it "safely", this is how to do it on
-modern hardware,
-[assuming you've mounted the efi partition on /boot](https://wiki.archlinux.org/index.php/Installation_guide#Example_layouts):
-
-For bootloader, I used to install GRUB, but now that all my machines are UEFI compatible, I prefer using systemd-boot, it seems faster for me.
+Now you can install a bootloader, I used to install GRUB, but now that all my machines are UEFI compatible, I prefer using systemd-boot, it seems faster for me.
 
 <details>
 <summary><b> Long life to GRUB </b></summary>
