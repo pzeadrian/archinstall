@@ -123,11 +123,10 @@ mkfs.btrfs -f -L home /dev/"Home Partition"
 mkswap -L swap /dev/"Swap Partition"
 ```
 
-<h3>Create btrfs subvolumes</h3>
-
 <details>
 <summary><b>You created home partition</b></summary>
 
+> Create btrfs subvolumes
 ```sh
 mount -t btrfs /dev/"Root partition" /mnt; cd /mnt 
 btrfs subvolume create @
@@ -139,17 +138,32 @@ cd /
 umount /mnt 
 ```
 
+> Mount partitions
+```sh
+mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
+mkdir -p /mnt/home
+mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home
+```
+
 </details>
 
 <details>
 <summary><b>You didn't create home partition</b></summary>
 
+> Create btrfs subvolumes
 ```sh
 mount -t btrfs /dev/"Root partition" /mnt; cd /mnt
 btrfs subvolume create @
 btrfs subvolume create @home
 cd /
 umount /mnt
+```
+
+> Mount partitions
+```sh
+mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
+mkdir -p /mnt/home
+mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home
 ```
 
 </details>
