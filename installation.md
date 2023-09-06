@@ -76,92 +76,84 @@ swapon /dev/disk/by-label/swap
 </details>
 
 <details>
-<summary><b>2. BTRFS </b></summary>
-<br />
-
-Before formatting, run another "lsblk" for being sure all is OK.
-<br />
-For boot partition:
-```bash
-mkfs.fat -F 32 -n boot /dev/"Boot Partition"
-```
-
-For root partition:
-```bash
-mkfs.btrfs -f -L arch /dev/"Root Partition"
-```
-
-For home partition: --> Skip this step if you don't want a home dedicated partition, because in btrfs, you can always create a home subvolume in root partition <--
-```bash
-mkfs.btrfs -f -L home /dev/"Home Partition"
-```
-
-For swap partition:
-```bash
-mkswap -L swap /dev/"Swap Partition"
-```
+    <summary><b>2. BTRFS </b></summary>
+    <br />
+    Before formatting, run another "lsblk" for being sure all is OK.
+    <br />
+    For boot partition:
+    ```bash
+        mkfs.fat -F 32 -n boot /dev/"Boot Partition"
+    ```
+    <br />
+    For root partition:
+    ```bash
+        mkfs.btrfs -f -L arch /dev/"Root Partition"
+    ```
+    <br />
+    For home partition: --> Skip this step if you don't want a home dedicated partition, because in btrfs, you can always create a home subvolume in root partition <--
+    ```bash
+        mkfs.btrfs -f -L home /dev/"Home Partition"
+    ```
+    <br />
+    For swap partition:
+    ```bash
+        mkswap -L swap /dev/"Swap Partition"
+    ```
 
 ## Creating btrfs subvolumes
-<details>
-<summary><b> You created Home partition></b></summary>
-<br/>
- ```bash
-mount -t btrfs /dev/"Root partition" /mnt; cd /mnt 
-btrfs subvolume create @
-cd /
-umount /mnt
-mount -t btrfs /dev/"Home partition" /mnt; cd /mnt
-btrfs subvolume create @home
-cd /
-umount /mnt 
-```
-</details>
-
-<details>
-<summary><b>You didn't create Home partition</b></summary>
-<br />
-```bash
-mount -t btrfs /dev/"Root partition" /mnt; cd /mnt
-btrfs subvolume create @
-btrfs subvolume create @home
-cd /
-umount /mnt
-```
-</details>
+    <details>
+        <summary><b> You created Home partition></b></summary>
+        <br/>
+         ```bash
+            mount -t btrfs /dev/"Root partition" /mnt; cd /mnt 
+            btrfs subvolume create @
+            cd /
+            umount /mnt
+            mount -t btrfs /dev/"Home partition" /mnt; cd /mnt
+            btrfs subvolume create @home
+            cd /
+            umount /mnt 
+        ```
+    </details>
+    <details>
+        <summary><b>You didn't create Home partition</b></summary>
+        <br />
+        ```bash
+            mount -t btrfs /dev/"Root partition" /mnt; cd /mnt
+            btrfs subvolume create @
+            btrfs subvolume create @home
+            cd /
+            umount /mnt
+        ```
+    </details>
 
 ## Mounting Partitions
-<details>
-<summary><b> You created Home partition></b></summary>
-<br />
-| You created Home partition | You didn't create Home partition |
-
-```bash
-mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
-mkdir -p /mnt/home
-mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home
-```
-</details>
-
-<details>
-<summary><b>You didn't create Home partition</b></summary>
-<br />
-```bash
-mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
-mkdir -p /mnt/home
-mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home
-```
-
-Then,
-
-```bash
-mkdir -p /mnt/boot/efi
-mount /dev/"Boot Partition" /mnt/boot/efi
-```
-```bash 
-swapon /dev/"Swap Partition"
-```
-</details>
-
+    <details>
+        <summary><b> You created Home partition></b></summary>
+        <br />
+        ```bash
+            mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
+            mkdir -p /mnt/home
+            mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home
+        ```
+    </details>
+    <details>
+        <summary><b>You didn't create Home partition</b></summary>
+        <br />
+        ```bash
+            mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
+            mkdir -p /mnt/home
+            mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home
+        ```
+    </details>
+    Then,
+    ```bash
+    mkdir -p /mnt/boot/efi
+    mount /dev/"Boot Partition" /mnt/boot/efi
+    ```
+    ```bash 
+    swapon /dev/"Swap Partition"
+    ```
 </details>
 
 ## Installing Linux kernel and basic packages
