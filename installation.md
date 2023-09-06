@@ -40,7 +40,7 @@ cfdisk /dev/"Your disk name" # If you plan to distribute your partitions across 
 
 <details>
 <summary><b>1. EXT4 </b></summary>
-<br>
+<br />
 
 This is so simple, but effective...
 For boot:
@@ -77,7 +77,7 @@ swapon /dev/disk/by-label/swap
 
 <details>
 <summary><b>2. BTRFS </b></summary>
-<br>
+<br />
 
 Before formatting, run another "lsblk" for being sure all is OK.
 For boot partition:
@@ -104,12 +104,12 @@ mkswap -L swap /dev/"Swap Partition"
 
 | You created Home partition | You didn't create Home partition |
 | --------  | ------------------- | 
-| ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  < br > ``` btrfs subvolume create @ ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` < br > ``` mount -t btrfs /dev/"Home partition" /mnt; cd /mnt ``` <br /> ``` btrfs subvolume create @home ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` |  ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  < br > ``` btrfs subvolume create @ ``` < br > ``` btrfs subvolume create @home ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` | 
+| ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  <br /> ``` btrfs subvolume create @ ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` < br > ``` mount -t btrfs /dev/"Home partition" /mnt; cd /mnt ``` <br /> ``` btrfs subvolume create @home ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` |  ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  < br > ``` btrfs subvolume create @ ``` < br > ``` btrfs subvolume create @home ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` | 
 
 ## Mounting Partitions
 | You created Home partition | You didn't create Home partition |
 | --------  | ------------------- | 
-| ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` < br > ```mkdir -p /mnt/home ``` < br > ``` mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home ``` | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home ``` | 
+| ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` < br > ``` mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home ``` | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home ``` | 
 
 
 
@@ -193,12 +193,12 @@ Now you can install a bootloader and test it "safely", this is how to do it on
 modern hardware,
 [assuming you've mounted the efi partition on /boot](https://wiki.archlinux.org/index.php/Installation_guide#Example_layouts):
 
-< br >
+<br />
 For bootloader, I used to install GRUB, but now that all my machines are UEFI compatible, I prefer using systemd-boot, it seems faster for me.
 
 <details>
 <summary><b> Long life to GRUB </b></summary>
-< br >
+<br />
 
 ```bash
 pacman -S grub efibootmgr os-prober
