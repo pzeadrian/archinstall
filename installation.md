@@ -254,6 +254,7 @@ For bootloader, I used to install GRUB, but now that all my machines are UEFI co
 <summary><b> Long life to GRUB </b></summary>
 <br />
 
+> It's ok, so, do
 ```sh
 pacman -S grub efibootmgr os-prober
 grub-install --target=x86_64-efi --efi-directory=/boot
@@ -265,11 +266,14 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 <details>
 <summary><b> I have UEFI, and I'm so cool </b></summary>
+<br />
+
+> Ok, just do
 ```sh
 bootctl install
 ```
 
-In /boot/loader/loader.conf, add:
+> In /boot/loader/loader.conf, add:
 ```sh
 default  arch.conf
 timeout  5
@@ -277,7 +281,7 @@ console-mode max
 editor   no
 ```
 
-In /boot/loader/entries/ create arch.conf file and add:
+> In /boot/loader/entries/ create arch.conf file and add:
 ```sh
 ## This is just an example config file.
 ## Please edit the paths and kernel parameters according to your system.
