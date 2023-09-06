@@ -81,21 +81,25 @@ swapon /dev/disk/by-label/swap
     Before formatting, run another "lsblk" for being sure all is OK.
     <br />
     For boot partition:
+    <br />
     ```bash
         mkfs.fat -F 32 -n boot /dev/"Boot Partition"
     ```
     <br />
     For root partition:
+    <br />
     ```bash
         mkfs.btrfs -f -L arch /dev/"Root Partition"
     ```
     <br />
     For home partition: --> Skip this step if you don't want a home dedicated partition, because in btrfs, you can always create a home subvolume in root partition <--
+    <br />
     ```bash
         mkfs.btrfs -f -L home /dev/"Home Partition"
     ```
     <br />
     For swap partition:
+    <br />
     ```bash
         mkswap -L swap /dev/"Swap Partition"
     ```
