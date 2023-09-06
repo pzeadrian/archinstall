@@ -126,6 +126,7 @@ mkswap -L swap /dev/"Swap Partition"
 
 <details>
 <summary><b>You created home partition</b></summary>
+<br />
 
 > Create btrfs subvolumes
 ```sh
@@ -150,6 +151,7 @@ mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home
 
 <details>
 <summary><b>You didn't create home partition</b></summary>
+<br />
 
 > Create btrfs subvolumes
 ```sh
