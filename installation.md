@@ -100,8 +100,8 @@ swapon /dev/disk/by-label/swap
 **Create btrfs subvolumes**
 <table>
 <tr>
-<th>You created home partition</th>
-<th>You didn't create home partition</th>
+<th>**You created home partition**</th>
+<th>**You didn't create home partition**</th>
 </tr>
 </table>
 
