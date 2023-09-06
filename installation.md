@@ -97,7 +97,7 @@ swapon /dev/disk/by-label/swap
 <details>
 <summary><b>2. btrfs</b></summary>
 <br />
-**Format Partitions**
+<h3>Format Partitions</h3>
 
 > For boot partition:
 
@@ -123,7 +123,7 @@ mkfs.btrfs -f -L home /dev/"Home Partition"
 mkswap -L swap /dev/"Swap Partition"
 ```
 
-**Create btrfs subvolumes**
+<h3>Create btrfs subvolumes</h3>
 
 <details>
 <summary><b>You created home partition</b></summary>
