@@ -182,7 +182,7 @@ swapon /dev/"Swap Partition"
 
 ## Installing Linux kernel and basic packages
 ```sh
-pacstrap -i /mnt base base-devel linux-zen linux-firmware btrfs-progs
+pacstrap -i /mnt base base-devel linux-zen linux-firmware # If you plan to use btrfs, then add btrfs-progs
 ```
 
 ## Configuring the system basics
