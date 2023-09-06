@@ -35,11 +35,50 @@ lsblk # For checking your disk(s) name
 cfdisk /dev/"Your disk name" # If you plan to distribute your partitions across multiple disks, just run this command changing the disk name
 ```
 
+## Format partitions
+- Currently, I use two types of filesystems, btrfs (for snapshots with Timeshift) on a machine and the old and trusty EXT4 in another one, here's how I partition my disk according to these filesystems.
+
 <details>
-<summary><b>1. BTRFS </b></summary>
+<summary><b>1. EXT4 </b></summary>
 <br>
 
-## Format partitions
+This is so simple, but effective...
+For boot:
+```bash
+mkfs.fat -F 32 -n boot /dev/"Boot Partition"
+```
+
+For swap:
+```bash
+mkswap -L swap /dev/"Swap Partition"
+```
+
+For root:
+```bash
+mkfs.ext4 -L root /dev/"Root Partition"
+```
+
+For home:
+```bash
+mkfs.ext4 -L home /dev/"Home Partition"
+```
+
+## Mounting Partitions
+```bash
+mount /dev/disk/by-label/root /mnt
+mkdir -p /mnt/home
+mkdir -p /mny/boot
+mount /dev/disk/by-label/home /mnt/home
+mount /dev/disk/by-label/boot /mnt/boot
+swapon /dev/disk/by-label/swap
+```
+
+</details>
+
+<details>
+<summary><b>2. BTRFS </b></summary>
+<br>
+
 Before formatting, run another "lsblk" for being sure all is OK.
 For boot partition:
 ```bash
@@ -65,14 +104,13 @@ mkswap -L swap /dev/"Swap Partition"
 
 | You created Home partition | You didn't create Home partition |
 | --------  | ------------------- | 
-| ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  <br /> ``` btrfs subvolume create @ ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` <br /> ``` mount -t btrfs /dev/"Home partition" /mnt; cd /mnt ``` <br /> ``` btrfs subvolume create @home ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` |  ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  <br /> ``` btrfs subvolume create @ ``` <br /> ``` btrfs subvolume create @home ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` | 
+| ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  < br > ``` btrfs subvolume create @ ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` < br > ``` mount -t btrfs /dev/"Home partition" /mnt; cd /mnt ``` <br /> ``` btrfs subvolume create @home ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` |  ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  < br > ``` btrfs subvolume create @ ``` < br > ``` btrfs subvolume create @home ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` | 
 
 ## Mounting Partitions
 | You created Home partition | You didn't create Home partition |
 | --------  | ------------------- | 
-| ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home ``` | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home ``` | 
+| ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` < br > ```mkdir -p /mnt/home ``` < br > ``` mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home ``` | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home ``` | 
 
-</details>
 
 
 ```bash
@@ -82,6 +120,8 @@ mount /dev/"Boot Partition" /mnt/boot/efi
 ```bash 
 swapon /dev/"Swap Partition"
 ```
+
+</details>
 
 ## Installing Linux kernel and basic packages
 ```bash
@@ -153,12 +193,48 @@ Now you can install a bootloader and test it "safely", this is how to do it on
 modern hardware,
 [assuming you've mounted the efi partition on /boot](https://wiki.archlinux.org/index.php/Installation_guide#Example_layouts):
 
+< br >
+For bootloader, I used to install GRUB, but now that all my machines are UEFI compatible, I prefer using systemd-boot, it seems faster for me.
+
+<details>
+<summary><b> Long life to GRUB </b></summary>
+< br >
+
 ```bash
 pacman -S grub efibootmgr os-prober
-grub-install --target=x86_64-efi --efi-directory=/boot/efi
+grub-install --target=x86_64-efi --efi-directory=/boot
 os-prober
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+</details>
+
+<details>
+<summary><b> I have UEFI, and I'm so cool </b></summary>
+```bash
+bootctl install
+```
+
+In /boot/loader/loader.conf, add:
+```bash
+default  arch.conf
+timeout  5
+console-mode max
+editor   no
+```
+
+In /boot/loader/entries/ create arch.conf file and add:
+```bash
+## This is just an example config file.
+## Please edit the paths and kernel parameters according to your system.
+
+title   Arch Linux
+linux   /vmlinuz-linux-zen
+initrd  /initramfs-linux-zen.img
+options root="LABEL=root" rw quiet splash loglevel=0
+```
+
+</details>
 
 Now you can create your user:
 
