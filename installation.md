@@ -26,7 +26,7 @@ station wlan0 connect "Wifi Name" # It will prompt to input the password automat
 
 ## Disk Partitioning
 For me, the ideal partition scheme just have boot(/boot), root(/), home(/home) and swap partitions. The space that you give to those partitions remains in yourself.
-For partitioning your disk(s), I recommend you to use cfdisk, because in my opinion, is the easiest way to do it from terminal. So, first run:
+For partitioning your disk(s), I recommend you to use cfdisk, because, in my opinion, is the easiest way to do it from terminal. So, first run:
 ```bash
 lsblk # For checking your disk(s) name
 ```
@@ -34,6 +34,10 @@ lsblk # For checking your disk(s) name
 ```bash
 cfdisk /dev/"Your disk name" # If you plan to distribute your partitions across multiple disks, just run this command changing the disk name
 ```
+
+<details>
+<summary><b>1. BTRFS </b></summary>
+<br>
 
 ## Format partitions
 Before formatting, run another "lsblk" for being sure all is OK.
@@ -67,6 +71,8 @@ mkswap -L swap /dev/"Swap Partition"
 | You created Home partition | You didn't create Home partition |
 | --------  | ------------------- | 
 | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home ``` | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home ``` | 
+
+</details>
 
 
 ```bash
