@@ -34,12 +34,13 @@ lsblk # For checking your disk(s) name
 cfdisk /dev/"Your disk name" # If you plan to distribute your partitions across multiple disks, just run this command changing the disk name
 ```
 
-## Format partitions
+## Formatting and mounting partitions
 - Currently, I use two types of filesystems, btrfs (for snapshots with Timeshift) on a machine and the old and trusty EXT4 in another one, here's how I partition my disk according to these filesystems.
 
 <details>
 <summary><b>1. ext4</b></summary>
 <br/>
+**Format Partitions**
 
 This is so simple, but effective:
 > For boot:
@@ -62,4 +63,47 @@ mkfs.ext4 -L root /dev/"Root Partition"
 mkfs.ext4 -L home /dev/"Home Partition"
 ```
 
+**Mount Partitions**
+```sh
+mount /dev/disk/by-label/root /mnt
+mkdir -p /mnt/home
+mkdir -p /mny/boot
+mount /dev/disk/by-label/home /mnt/home
+mount /dev/disk/by-label/boot /mnt/boot
+swapon /dev/disk/by-label/swap
+```
+
 </details>
+
+<details>
+<summary><b>2. btrfs</b></summary>
+<br />
+**Format Partitions**
+
+> For boot partition:
+```sh
+    mkfs.fat -F 32 -n boot /dev/"Boot Partition"
+```
+> For root partition:
+```sh
+    mkfs.btrfs -f -L arch /dev/"Root Partition"
+```
+> For home partition: --> Skip this step if you don't want a home dedicated partition, because in btrfs, you can always create a home subvolume in root partition <--
+```sh
+    mkfs.btrfs -f -L home /dev/"Home Partition"
+```
+> For swap partition:
+```sh
+    mkswap -L swap /dev/"Swap Partition"
+```
+
+**Create btrfs subvolumes**
+<table>
+<tr>
+<th>You created home partition</th>
+<th>You didn't create home partition</th>
+</tr>
+</table>
+
+</details>
+
