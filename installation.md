@@ -80,6 +80,7 @@ swapon /dev/disk/by-label/swap
 <br />
 
 Before formatting, run another "lsblk" for being sure all is OK.
+<br />
 For boot partition:
 ```bash
 mkfs.fat -F 32 -n boot /dev/"Boot Partition"
@@ -101,17 +102,56 @@ mkswap -L swap /dev/"Swap Partition"
 ```
 
 ## Creating btrfs subvolumes
+<details>
+<summary><b> You created Home partition></b></summary>
+<br/>
+ ```bash
+mount -t btrfs /dev/"Root partition" /mnt; cd /mnt 
+btrfs subvolume create @
+cd /
+umount /mnt
+mount -t btrfs /dev/"Home partition" /mnt; cd /mnt
+btrfs subvolume create @home
+cd /
+umount /mnt 
+```
+</details>
 
-| You created Home partition | You didn't create Home partition |
-| --------  | ------------------- | 
-| ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  <br /> ``` btrfs subvolume create @ ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` < br > ``` mount -t btrfs /dev/"Home partition" /mnt; cd /mnt ``` <br /> ``` btrfs subvolume create @home ``` <br /> ``` cd / ``` <br /> ``` umount /mnt ``` |  ``` mount -t btrfs /dev/"Root partition" /mnt; cd /mnt ```  < br > ``` btrfs subvolume create @ ``` < br > ``` btrfs subvolume create @home ``` < br > ``` cd / ``` < br > ``` umount /mnt ``` | 
+<details>
+<summary><b>You didn't create Home partition</b></summary>
+<br />
+```bash
+mount -t btrfs /dev/"Root partition" /mnt; cd /mnt
+btrfs subvolume create @
+btrfs subvolume create @home
+cd /
+umount /mnt
+```
+</details>
 
 ## Mounting Partitions
+<details>
+<summary><b> You created Home partition></b></summary>
+<br />
 | You created Home partition | You didn't create Home partition |
-| --------  | ------------------- | 
-| ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` < br > ``` mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home ``` | ``` mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt ``` <br /> ```mkdir -p /mnt/home ``` <br /> ``` mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home ``` | 
 
+```bash
+mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
+mkdir -p /mnt/home
+mount -t btrfs -o subvol=@home /dev/"Home Partition" /mnt/home
+```
+</details>
 
+<details>
+<summary><b>You didn't create Home partition</b></summary>
+<br />
+```bash
+mount -t btrfs -o subvol=@ /dev/"Root Partition" /mnt
+mkdir -p /mnt/home
+mount -t btrfs -o subvol=@home /dev/"Root Partition" /mnt/home
+```
+
+Then,
 
 ```bash
 mkdir -p /mnt/boot/efi
@@ -120,6 +160,7 @@ mount /dev/"Boot Partition" /mnt/boot/efi
 ```bash 
 swapon /dev/"Swap Partition"
 ```
+</details>
 
 </details>
 
