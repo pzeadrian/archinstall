@@ -48,13 +48,15 @@ cfdisk /dev/"Your disk name" # If you plan to distribute your partitions across 
 
 ## Formatting and mounting partitions
 
--   Currently, I use two types of filesystems, btrfs (for snapshots with Timeshift) on a machine and the old and trusty EXT4 in another one, here's how I partition my disk according to these filesystems.
+-   Currently, I use two types of filesystems, btrfs (for snapshots with Timeshift) on a machine and the old and trusty EXT4 in another one, but, with LVM2, here's how I partition my disk according to these filesystems.
 
 <details>
 <summary><b>1. ext4</b></summary>
 <br/>
 <h3>Format partitions</h3>
 
+> [!NOTE]
+> In this case, you should do some research in order to learn to partition using LVM2
 
 This is so simple, but effective:
 
@@ -67,30 +69,30 @@ mkfs.fat -F 32 -n boot /dev/"Boot Partition"
 > For swap:
 
 ```sh
-mkswap -L swap /dev/"Swap Partition"
+mkswap -L swap /dev/"lvm name"/"Swap Partition"
 ```
 
 > For root:
 
 ```sh
-mkfs.ext4 -L root /dev/"Root Partition"
+mkfs.ext4 -L root /dev/"lvm name"/"Root Partition"
 ```
 
 > For home:
 
 ```sh
-mkfs.ext4 -L home /dev/"Home Partition"
+mkfs.ext4 -L home /dev/"lvm name"/"Home Partition"
 ```
 
 <h3>Mount partitions</h3>
 
 ```sh
-mount /dev/disk/by-label/root /mnt
+mount /dev/"lvm name"/root /mnt
 mkdir -p /mnt/home
 mkdir -p /mny/boot
-mount /dev/disk/by-label/home /mnt/home
+mount /dev/"lvm name"/home /mnt/home
 mount /dev/disk/by-label/boot /mnt/boot
-swapon /dev/disk/by-label/swap
+swapon /dev/"lvm name"/swap
 ```
 
 </details>
