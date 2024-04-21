@@ -55,7 +55,6 @@ cfdisk /dev/"Your disk name" # If you plan to distribute your partitions across 
 <br/>
 <h3>Format partitions</h3>
 
-> [!NOTE]
 > In this case, you should do some research in order to learn to partition using LVM2
 
 This is so simple, but effective:
