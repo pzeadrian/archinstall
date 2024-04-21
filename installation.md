@@ -183,7 +183,7 @@ swapon /dev/"Swap Partition"
 
 ## Installing Linux kernel and basic packages
 ```sh
-pacstrap -i /mnt base base-devel linux-zen linux-firmware # If you plan to use btrfs, then add btrfs-progs
+pacstrap -i /mnt base base-devel linux-zen linux-firmware # If you plan to use btrfs, then add btrfs-progs, or add lvm2 if you plan to use LVM2
 ```
 
 ## Configuring the system basics
@@ -246,6 +246,8 @@ And, that's it, you've installed Arch Linux, at least until what the official gu
 pacman -S networkmanager
 systemctl enable NetworkManager
 ```
+
+> In case you used LVM2, you have to add it to mkinitcpio.conf, HOOKS line
 
 Now you can install a bootloader, I used to install GRUB, but now that all my machines are UEFI compatible, I prefer using systemd-boot, it seems faster for me.
 
