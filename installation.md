@@ -247,7 +247,10 @@ pacman -S networkmanager
 systemctl enable NetworkManager
 ```
 
-> In case you used LVM2, you have to add it to mkinitcpio.conf, HOOKS line
+> In case you used LVM2, you have to add it to mkinitcpio.conf, HOOKS line, and run:
+```sh
+mkinitcpio -P
+```
 
 Now you can install a bootloader, I used to install GRUB, but now that all my machines are UEFI compatible, I prefer using systemd-boot, it seems faster for me.
 
